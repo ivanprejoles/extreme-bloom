@@ -10,8 +10,6 @@ export async function DELETE (
             id,
         } = await req.json()
 
-        console.log(id)
-
         let updatedCategory: any = await client.category.delete({
             where: { id},
         });

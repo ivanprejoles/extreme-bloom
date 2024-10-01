@@ -115,7 +115,6 @@ export default function ProductTable({
     getRowId: (originalRow, index) => `${originalRow.id}-${index}`,
     /* */
   })
-  console.log('product-table')
 
   if (!isMounted) {
     return null
