@@ -3,9 +3,12 @@ import ClientSlider from "../_components/client-slider";
 import CategoryItems from "@/components/general/category-items";
 import EventCarousel from "@/components/general/event-carousel";
 import { MapDrawer } from "@/components/general/map-drawer";
+import { getCategories } from "@/app/actions/get-categories";
 
-export default function Home() {
+export default async function Home() {
 
+  const categories = await getCategories()
+  
   return (
     <div className="w-full h-auto min-h-[100vh] flex flex-col relative">
       {/* image slider */}
@@ -14,7 +17,7 @@ export default function Home() {
       </div>
       {/* category selection */}
       <div className="bg-transparent h-auto min-h-[20rem] -mt-[6rem]"> 
-          <CategorySelection />
+          <CategorySelection categories={categories} />
         {/* 3 column dashboard */}
         <div className="w-full h-auto p-4">
           <EventCarousel />

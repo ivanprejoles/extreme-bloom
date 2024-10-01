@@ -10,14 +10,33 @@ import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
 import { useToast } from '@/hooks/use-toast';
 
-const CategorySelection = () => {
+interface CategorySelectionProps {
+    categories: {
+        items: {
+            title: string;
+            id: string;
+            description: string;
+            updatedAt: Date;
+            imageSrc: string;
+            quantity: number;
+            price: number;
+            maxOrder: number;
+        }[];
+        title: string;
+        id: string;
+    }[]
+}
+
+const CategorySelection = ({
+    categories
+}: CategorySelectionProps) => {
     const [updatedItems, setUpdatedItems] = useState<itemType[]>()
-    const {onAddCategory, onAddItems, category, items} = useItemsStore()
+    const {onAddCategory, onAddItems, category} = useItemsStore()
     const { toast } = useToast()
 
     const itemCategoryDistribution = (items: any) => {
         const filteredItems: {[key: string]: itemCategoryType} = {}
-        const category = items.map((item: any) => {
+        const newCategory = items.map((item: any) => {
             filteredItems[item.id] = {items: item.items, current: 0, end: -1}
             return {
                 id: item.id,
@@ -25,35 +44,17 @@ const CategorySelection = () => {
                 imageSrc: item.imageSrc
             }
         })
-        return {filteredItems, category}
+        return {filteredItems, newCategory}
     }
 
     useEffect(() => {
-        const requestCategory = async () => {
-            await axios.post('/api/getCategory')
-                .then((response) => {
-                    if(response.data.length > 0) {
-                        const {filteredItems, category} = itemCategoryDistribution(response.data)
-                        onAddCategory(category)
-                        onAddItems(filteredItems)
-                        setUpdatedItems(getItemsUpdatedTwoWeeksAgo(response.data))
-                    }
-                })
-                .catch((error) => {
-                    console.error('error: ', error)
-                    toast({
-                        title: 'Error Getting Categories',
-                        description: 'Something went wron. Please check your network and try again.'
-                    })                
-                })
-        }
-
-        if (category.length <= 0) {
-            requestCategory()
-        }
+        const {filteredItems, newCategory} = itemCategoryDistribution(categories)
+        onAddCategory(newCategory)
+        onAddItems(filteredItems)
+        setUpdatedItems(getItemsUpdatedTwoWeeksAgo(categories))
     }, [])
 
-    function getItemsUpdatedTwoWeeksAgo(categories: itemCategoryType[]): itemType[] {
+    function getItemsUpdatedTwoWeeksAgo(categories: any[]): itemType[] {
         const twoWeeksAgo = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14); // Get the date 2 weeks ago
     
@@ -61,7 +62,7 @@ const CategorySelection = () => {
     
         // Iterate over each category
         categories.forEach(category => {
-            const filteredItems = category.items.filter(item => {
+            const filteredItems = category.items.filter((item: any) => {
                 const updatedAt = new Date(item.updatedAt);
                 return updatedAt >= twoWeeksAgo;
             });
