@@ -17,51 +17,44 @@ interface ClientSideBarProps {
 const ClientSideBar = ({
     children
 }: ClientSideBarProps) => {
-    const [isMounting, setIsMounting] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<{ id: string, role: MemberRole }>();
     const [open, setOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            setLoading(false); // Stop loading after checking auth state
             if (user) {
-                const response = await axios.post('/api/accountVerify', { emailId: user.uid, email: user.email, imageUrl: user.photoURL });
+                const response = await axios.post('/api/accountVerify', {
+                    emailId: user.uid,
+                    email: user.email,
+                    imageUrl: user.photoURL,
+                });
                 if (response.data && response.data.user) {
                     const userRole = response.data.user.role;
                     setUser({ id: response.data.user.id, role: userRole });
-    
+
                     if (userRole === MemberRole.ADMIN) {
-                        router.push('/admin/product');
+                        router.push('/admin/product'); // Redirect if admin
                     } else {
-                        router.push('/');
+                        router.push('/'); // Redirect if not admin
                     }
                 }
             } else {
-                router.push('/');
+                router.push('/'); // Redirect if not signed in
             }
         });
-    
-        return () => unsubscribe();
+
+        return () => unsubscribe(); // Cleanup listener on unmount
     }, [router]);
 
-    useEffect(() => {
-      if (!isMounting) {
-          if (!user?.id) {
-              router.push('/'); // Redirect to home if user ID does not exist
-          } else if (user.role === MemberRole.ADMIN) {
-              router.push('/admin/product'); // Redirect to admin product page if admin
-          } else {
-              router.push('/'); // Redirect to home if not admin
-          }
-      }
-  }, [isMounting, user, router]);
-
-    if (isMounting) {
+    if (loading) {
         return <div>Verifying account...</div>; // Show loading indicator
     }
 
     if (!user?.id || user.role !== MemberRole.ADMIN) {
-      return <div>Redirecting...</div>
+        return <div>Redirecting...</div>; // Show redirecting state
     }
 
     const links = [
