@@ -23,21 +23,26 @@ const ClientSideBar = ({
     const router = useRouter();
 
     useEffect(() => {
-        setIsMounting(true)
-        const authenticate = onAuthStateChanged(auth, async (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const response = await axios.post('/api/accountVerify', { emailId: user.uid, email: user.email, imageUrl: user.photoURL });
-                if (response.data && response.data.user && response.data.user.role === MemberRole.ADMIN) {
-                    setUser({ id: response.data.user.id, role: response.data.user.role });
+                if (response.data && response.data.user) {
+                    const userRole = response.data.user.role;
+                    setUser({ id: response.data.user.id, role: userRole });
+    
+                    if (userRole === MemberRole.ADMIN) {
+                        router.push('/admin/product');
+                    } else {
+                        router.push('/');
+                    }
                 }
             } else {
-              router.push('/')
+                router.push('/');
             }
-          });
-          setIsMounting(false);
-
-        return () => authenticate();
-    }, [auth]);
+        });
+    
+        return () => unsubscribe();
+    }, [router]);
 
     useEffect(() => {
       if (!isMounting) {
