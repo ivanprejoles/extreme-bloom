@@ -8,7 +8,7 @@ import { getAuth} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: `${process.env.FIREBASE}`,
+  apiKey: `${process.env.NEXT_PUBLIC_FIREBASE}`,
   authDomain: "extreme-bloom.firebaseapp.com",
   projectId: "extreme-bloom",
   storageBucket: "extreme-bloom.appspot.com",
