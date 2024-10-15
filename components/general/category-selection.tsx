@@ -31,8 +31,7 @@ const CategorySelection = ({
     categories
 }: CategorySelectionProps) => {
     const [updatedItems, setUpdatedItems] = useState<itemType[]>()
-    const {onAddCategory, onAddItems, category} = useItemsStore()
-    const { toast } = useToast()
+    const {onAddCategory, onAddItems} = useItemsStore()
 
     const itemCategoryDistribution = (items: any) => {
         const filteredItems: {[key: string]: itemCategoryType} = {}

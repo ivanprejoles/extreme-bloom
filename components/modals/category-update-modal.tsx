@@ -108,7 +108,7 @@ export function UpdateCategoryModal() {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="Category Title" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

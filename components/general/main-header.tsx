@@ -71,7 +71,6 @@ const MainHeader = () => {
                         <div className="grid gap-4">
                           <Link href='/account' className='h-9 w-full'>
                             <Button 
-                              // onClick={doSignOut}
                               className='w-full h-full'
                               variant='outline' 
                               size='sm'

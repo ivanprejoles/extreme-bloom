@@ -55,6 +55,14 @@ export type OmittedProduct  = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type OmittedEvent = {
+    id: string;
+    title: string;
+    imageSrc: string;
+    description: string;
+}
+
 export type AccountOrder  = {
     id: string;
     status: $Enums.Status;

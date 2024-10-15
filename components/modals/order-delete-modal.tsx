@@ -44,23 +44,26 @@ export function DeleteOrderModal() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
       if (isLoading) return
-        await axios.post('/api/deleteOrder', {id:values})
-            .then(() => {
-                toast({
-                  title: "Order Deleted Successfully",
-                    description: "Order deleted successfully.",
-                })
-                router.refresh()
-            })
-            .catch(() => {
-                toast({
-                    title: "Error Deleting Order",
-                    description: "Please refresh your page to see the current categories and try again.",
-                })
-            })
-            .finally(() => {
-                handleClose()
-            })
+      try {
+        await axios.post('/api/deleteOrder', { id: values });
+        
+        toast({
+          title: "Order Deleted Successfully",
+          description: "Order deleted successfully."
+        });
+        
+        router.refresh();
+      } catch (error) {
+        toast({
+          title: "Error Deleting Order",
+          description: "Please refresh your page to see the current orders and try again."
+        });
+        
+        console.error('error: ', error);
+      } finally {
+        handleClose();
+      }
+            
     }
         
     const handleClose = () => {

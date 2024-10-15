@@ -33,7 +33,6 @@ import { useToast } from "@/hooks/use-toast"
 import { useProductTable } from "@/hooks/admin/storage/use-product-storage"
 import { Textarea } from "../ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { useItemsStore } from "@/hooks/use-items"
 import { AspectRatio } from "../ui/aspect-ratio"
 
 const formSchema = z.object({

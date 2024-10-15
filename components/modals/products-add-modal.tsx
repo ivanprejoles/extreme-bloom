@@ -114,46 +114,54 @@ export function ProductsAddModal() {
     const onSubmit = async () => {
         if (isLoading) return;
         setIsLoading(true);
+    
         const uploadPromises = itemImage.map(async (fileObj) => {
             const { imageSrc, title, price, quantity, categoryId, description } = fileObj;
-
+    
             try {
                 const { downloadURL } = await uploadFileResumable(imageSrc, title);
-                return { imageSrc: downloadURL, title, price, quantity, categoryId, description};
+                return { imageSrc: downloadURL, title, price, quantity, categoryId, description };
             } catch (error) {
-                console.error(`Error uploading file ${name}:`, error);
+                console.error(`Error uploading file ${title}:`, error); // Changed `name` to `title`
                 return null;
             }
         });
-
+    
         try {
             const results = await Promise.all(uploadPromises);
             const successfulUploads = results.filter(result => result !== null);
-
-            await axios.post('/api/addProducts', { newProducts: successfulUploads })
-                .then(() => {
-                    toast({
-                        title: `Product Added`,
-                        description: 'Product added successfully. Refresh your page.',
-                    });
-                    router.refresh()
-
-                })
-                .catch(() => {
-                    toast({
-                        title: `Error Adding Product`,
-                        description: 'Check your input data. Also product title should be unique.',
-                    });
-                })
-                .finally(() => {
-                    setItemImage([]);
-                    setRemoveIndex('all');
-                    setIsLoading(false);
+    
+            if (successfulUploads.length === 0) {
+                toast({
+                    title: "No Products Uploaded",
+                    description: "Please ensure that at least one product is valid.",
                 });
+                setIsLoading(false); // Stop loading if no products were uploaded
+                return; // Early return
+            }
+    
+            await axios.post('/api/addProducts', { newProducts: successfulUploads });
+            
+            toast({
+                title: "Product Added",
+                description: "Product added successfully. Refresh your page."
+            });
+            
+            router.refresh();
+            
         } catch (error) {
-            console.error('Error processing uploads:', error);
+            toast({
+                title: "Error Adding Product",
+                description: "Check your input data. Also, product title should be unique."
+            });
+            console.error('Error adding products:', error);
+        } finally {
+            setItemImage([]);  // Reset the item image
+            setRemoveIndex('all');  // Remove all indices
+            setIsLoading(false);  // Stop the loading state
         }
     };
+    
 
     const onClear = () => {
         setRemoveIndex('all');

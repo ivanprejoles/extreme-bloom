@@ -44,23 +44,25 @@ export function DeleteCategoryModal() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
       if (isLoading) return
-        await axios.delete('/api/deleteCategory', {data:values})
-            .then(() => {
-                toast({
-                  title: "Category Deleted Successfully",
-                    description: "Category deleted successfully. Please Refresh your page.",
-                })
-                router.refresh()
-            })
-            .catch(() => {
-                toast({
-                    title: "Error Deleting Category",
-                    description: "Please refresh your page to see the current categories and try again.",
-                })
-            })
-            .finally(() => {
-                handleClose()
-            })
+      try {
+        await axios.delete('/api/deleteCategory', { data: values });
+        
+        toast({
+          title: "Category Deleted Successfully",
+          description: "Category deleted successfully. Please refresh your page."
+        });
+        
+        router.refresh();
+      } catch (error) {
+        toast({
+          title: "Error Deleting Category",
+          description: "Please refresh your page to see the current categories and try again."
+        });
+        
+        console.error('error: ', error);
+      } finally {
+        handleClose();
+      }     
     }
         
     const handleClose = () => {

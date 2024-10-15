@@ -65,23 +65,25 @@ export function UpdateAccountModal() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
       if (isLoading) return
-        await axios.post('/api/editAccount', values)
-            .then(() => {
-                toast({
-                  title: "Account Edited Successfully",
-                    description: "Account edited successfully. Please Refresh your page.",
-                })
-                router.refresh()
-            })
-            .catch(() => {
-                toast({
-                    title: "Error Editing Account",
-                    description: "Please refresh your page to see the current account information and try again.",
-                })
-            })
-            .finally(() => {
-                handleClose()
-            })
+        try {
+            await axios.post('/api/editAccount', values);
+            
+            toast({
+                title: "Account Edited Successfully",
+                description: "Account edited successfully. Please refresh your page."
+            });
+            
+            router.refresh();
+            } catch (error) {
+            toast({
+                title: "Error Editing Account",
+                description: "Please refresh your page to see the current account information and try again."
+            });
+            
+            console.error('error: ', error);
+            } finally {
+            handleClose();
+            }
     }
         
     const handleClose = () => {

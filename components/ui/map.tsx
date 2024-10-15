@@ -25,7 +25,7 @@ const Map = (Map: MapProps) => {
             center={posix}
             zoom={zoom}
             scrollWheelZoom={false}
-            style={{ height: "100%", width: "700px" }}
+            style={{ height: "100%", width: "100%" }}
             className="rounded-md overflow-hidden shadow-lg z-10 w-max min-w-[100%]"
         >
             <TileLayer

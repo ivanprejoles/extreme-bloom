@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Sidebar, SidebarBody, SidebarLink } from '../ui/sidebar';
 import { cn } from '@/lib/utils';
 import { FaBoxes, FaClipboardList } from 'react-icons/fa';
+import { AiFillNotification } from "react-icons/ai";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase/firebase';
 import axios from 'axios';
@@ -24,7 +25,7 @@ const ClientSideBar = ({
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setLoading(false); // Stop loading after checking auth state
+            setLoading(false);
             if (user) {
                 const response = await axios.post('/api/accountVerify', {
                     emailId: user.uid,
@@ -68,6 +69,11 @@ const ClientSideBar = ({
             href: "/admin/order",
             icon: <FaClipboardList className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
+        {
+            label: "Events",
+            href: "/admin/event",
+            icon: <AiFillNotification className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+        },
     ];
 
     return (
@@ -85,7 +91,7 @@ const ClientSideBar = ({
             </Sidebar>
             <div className="flex flex-1">
                 <div className="w-full h-full overflow-auto rounded-tl-2xl relative">
-                    <div className="top-0 absolute left-0 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-screen h-auto">
+                    <div className="top-0 absolute left-0 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-auto">
                         {children}
                     </div>
                 </div>

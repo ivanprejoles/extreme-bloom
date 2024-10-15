@@ -36,11 +36,10 @@ const ProductPage = async ({
                         Product Page
                     </h1>
                     <p className="max-w-2xl text-lg font-light text-foreground">
-                        {`Monitor your product's information and easily manage updates to keep everything current and accurate.`}
+                        {`Easily monitor and update your product information to keep it accurate and up-to-date.`}
                     </p>
                 </div>
                 <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-                    {/* ranked updated items */}
                     <Card x-chunk="dashboard-01-chunk-5">
                         <RankedItems  
                             title='Updated Products'
@@ -49,7 +48,6 @@ const ProductPage = async ({
                             <RankedContent updates={updates} />
                         </RankedItems>
                     </Card>
-                    {/* category number */}
                     <Card
                         className="xl:col-span-2 flex flex-col" x-chunk="dashboard-01-chunk-4"
                     >
@@ -60,7 +58,6 @@ const ProductPage = async ({
                         />
                     </Card>
                 </div>
-                {/* USER TABLE */}
                 <div className="grid gap-4 md:gap-8 grid-cols-1">
                 <Card
                     className="col-span-1"

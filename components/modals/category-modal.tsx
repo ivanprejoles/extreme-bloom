@@ -65,23 +65,25 @@ const CategoryModal = () => {
         const randomSeed = Math.abs(Math.sin(seed)) * 10000;        
         const randomName = `${random.place()}_${Math.floor(randomSeed)}`;
 
-        await axios.post('/api/createCategory', {category: randomName})
-            .then(() => {
-                toast({
-                    title: 'Category Created Successfully',
-                    description: 'New category created, refresh your page to see the current category.'
-                })
-            })
-            .catch((error) => {
-                toast({
-                    title: 'Error Creating Category',
-                    description: 'Something wrong creating your category. Please try again later.'
-                })
-                console.error(error)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })        
+        try {
+            await axios.post('/api/createCategory', { category: randomName });
+            
+            toast({
+                title: 'Category Created Successfully',
+                description: 'New category created, refresh your page to see the current category.'
+            });
+            router.refresh()
+        } catch (error) {
+            toast({
+                title: 'Error Creating Category',
+                description: 'Something went wrong creating your category. Please try again later.'
+            });
+            
+            console.error('Error:', error);
+        } finally {
+            setIsLoading(false); // Stop the loading state
+        }
+              
     }
 
   return (

@@ -52,24 +52,23 @@ export default function CartTable({
   const onDeleteUserOrder = async (userId: string) => {
     if (!recentOrderIds.includes(userId) || isLoading) return
     setIsLoading(true)
-    await axios.post('/api/deleteUserOrder', {userId})
-      .then((response) => {
+      try {
+        await axios.post('/api/deleteUserOrder', { userId });
         toast({
           title: 'Order Deleted Successfully',
           description: 'Please refresh your page to see the current status.'
-        })
-        router.refresh()
-      })
-      .catch((error) => {
+        });
+        router.refresh();
+      } catch (error) {
         toast({
           title: 'Error Deleting Order',
           description: 'Please check and refresh your page. Try again.'
-        })
-        console.log('error: ', error)
-      })
-      .then(() => {
-        setIsLoading(false)
-      })
+        });
+        
+        console.error('error: ', error);
+      } finally {
+        setIsLoading(false);
+      }
   } 
 
   

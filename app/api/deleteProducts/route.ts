@@ -14,7 +14,6 @@ export async function DELETE(req: Request) {
         id: { in: products },  // 'in' is used to match any of the IDs in the array
       },
     });
-    console.log(deletedProducts)
 
     return NextResponse.json(deletedProducts);
   } catch (error) {

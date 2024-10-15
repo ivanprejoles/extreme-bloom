@@ -8,6 +8,7 @@ import { UpdateCategoryModal } from "../modals/category-update-modal";
 import { DeleteCategoryModal } from "../modals/category-delete-modal";
 import { DeleteOrderModal } from "../modals/order-delete-modal";
 import { UpdateAccountModal } from "../modals/account-modal";
+import { EventModal } from "../modals/event-add-modal";
 
 
 
@@ -31,6 +32,7 @@ const ModalProvider = () => {
             <DeleteCategoryModal/>
             <DeleteOrderModal />
             <UpdateAccountModal />
+            <EventModal />
         </div>
     );
 }

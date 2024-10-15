@@ -42,14 +42,14 @@ export function MapDrawer() {
             <Map />
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="z-[101]">
         <div className="mx-auto w-full max-w-4xl">
           <DrawerHeader>
             <DrawerTitle>Our Location</DrawerTitle>
             <DrawerDescription>Get your order here.</DrawerDescription>
           </DrawerHeader>
-          <div className="p-4 pb-0 h-[20rem] w-full">
-            <MyMap posix={[14.5995, 120.9842]} />
+          <div className="p-4 pb-0 h-[28rem] w-full">
+            <MyMap posix={[14.397992, 120.961712]} />
           </div>
           <DrawerFooter>
             <DrawerClose asChild>
