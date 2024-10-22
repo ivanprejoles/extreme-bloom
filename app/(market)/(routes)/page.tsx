@@ -3,23 +3,16 @@ import CategoryItems from "@/components/general/category-items";
 import { AppleCardsCarouselDemo } from "@/components/general/event-carousel";
 import { MapDrawer } from "@/components/general/map-drawer";
 import { getCategories } from "@/app/actions/get-categories";
-import Image from "next/image";
 import { getEvents } from "@/app/actions/get-events";
+import Image from "next/image";
+import { Suspense } from "react";
 
-export async function getStaticProps() {
-  const categories = await getCategories();
-  const events = await getEvents();
+export default async function Home() {
+  // Fetch data in the server component itself
+  const categoriesPromise = getCategories();
+  const eventsPromise = getEvents();
 
-  return {
-    props: {
-      categories,
-      events,
-    },
-    revalidate: 60, // Revalidate every 60 seconds
-  };
-}
-
-export default function Home({ categories, events }: any) {
+  // Use Suspense to show loading states while waiting for the data
   return (
     <div className="w-full h-auto min-h-[100vh] flex flex-col relative">
       <div className="h-[20rem] md:h-[40rem]">
@@ -33,8 +26,12 @@ export default function Home({ categories, events }: any) {
         </div>
       </div>
       <div className="bg-transparent h-auto min-h-[20rem] -mt-[6rem]"> 
-        <CategorySelection categories={categories} />
-        <AppleCardsCarouselDemo events={events} />
+        <Suspense fallback={<div>Loading categories...</div>}>
+          <CategorySelection categories={await categoriesPromise} />
+        </Suspense>
+        <Suspense fallback={<div>Loading events...</div>}>
+          <AppleCardsCarouselDemo events={await eventsPromise} />
+        </Suspense>
         <div className="w-full h-auto px-2 md:px-10" id="item-storage">
           <CategoryItems />
         </div>
