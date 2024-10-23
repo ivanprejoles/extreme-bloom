@@ -7,12 +7,43 @@ import { getEvents } from "@/app/actions/get-events";
 import Image from "next/image";
 import { Suspense } from "react";
 
-export default async function Home() {
-  // Fetch data in the server component itself
-  const categoriesPromise = getCategories();
-  const eventsPromise = getEvents();
+export async function getStaticProps() {
+  const categories = await getCategories();
+  const events = await getEvents();
 
-  // Use Suspense to show loading states while waiting for the data
+  return {
+    props: {
+      categories,
+      events,
+    },
+    revalidate: 60,
+  };
+}
+
+interface HomeType {
+  categories: {
+    id: string;
+    title: string;
+    items: {
+        id: string;
+        title: string;
+        updatedAt: Date;
+        imageSrc: string;
+        quantity: number;
+        price: number;
+        maxOrder: number;
+        description: string;
+    }[];
+  }[],
+  events: {
+    id: string;
+    title: string;
+    imageSrc: string;
+    description: string;
+  }[]
+}
+
+export default function Home({ categories, events }: HomeType) {
   return (
     <div className="w-full h-auto min-h-[100vh] flex flex-col relative">
       <div className="h-[20rem] md:h-[40rem]">
@@ -25,13 +56,9 @@ export default async function Home() {
           />
         </div>
       </div>
-      <div className="bg-transparent h-auto min-h-[20rem] -mt-[6rem]"> 
-        <Suspense fallback={<div>Loading categories...</div>}>
-          <CategorySelection categories={await categoriesPromise} />
-        </Suspense>
-        <Suspense fallback={<div>Loading events...</div>}>
-          <AppleCardsCarouselDemo events={await eventsPromise} />
-        </Suspense>
+      <div className="bg-transparent h-auto min-h-[20rem] -mt-[6rem]">
+        <CategorySelection categories={categories} />
+        <AppleCardsCarouselDemo events={events} />
         <div className="w-full h-auto px-2 md:px-10" id="item-storage">
           <CategoryItems />
         </div>
@@ -40,3 +67,4 @@ export default async function Home() {
     </div>
   );
 }
+
