@@ -30,6 +30,7 @@ interface CategorySelectionProps {
 const CategorySelection = ({
     categories
 }: CategorySelectionProps) => {
+    console.log(categories)
     const [updatedItems, setUpdatedItems] = useState<itemType[]>()
     const {onAddCategory, onAddItems} = useItemsStore()
 
