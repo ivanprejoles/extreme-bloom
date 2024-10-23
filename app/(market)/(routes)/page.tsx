@@ -7,43 +7,11 @@ import { getEvents } from "@/app/actions/get-events";
 import Image from "next/image";
 import { Suspense } from "react";
 
-export async function getStaticProps() {
+// This is a server component, so you can directly fetch data here
+export default async function Home() {
   const categories = await getCategories();
   const events = await getEvents();
 
-  return {
-    props: {
-      categories,
-      events,
-    },
-    revalidate: 60,
-  };
-}
-
-interface HomeType {
-  categories: {
-    id: string;
-    title: string;
-    items: {
-        id: string;
-        title: string;
-        updatedAt: Date;
-        imageSrc: string;
-        quantity: number;
-        price: number;
-        maxOrder: number;
-        description: string;
-    }[];
-  }[],
-  events: {
-    id: string;
-    title: string;
-    imageSrc: string;
-    description: string;
-  }[]
-}
-
-export default function Home({ categories, events }: HomeType) {
   return (
     <div className="w-full h-auto min-h-[100vh] flex flex-col relative">
       <div className="h-[20rem] md:h-[40rem]">
@@ -51,7 +19,7 @@ export default function Home({ categories, events }: HomeType) {
           <Image
             src="/home-image.png"
             alt="Home Page"
-            layout="fill"
+            fill // Use the "fill" attribute instead of "layout"
             className="object-cover"
           />
         </div>
@@ -67,4 +35,3 @@ export default function Home({ categories, events }: HomeType) {
     </div>
   );
 }
-
