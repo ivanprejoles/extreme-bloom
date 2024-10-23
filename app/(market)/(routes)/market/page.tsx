@@ -12,6 +12,8 @@ export default async function Home() {
   const categories = await getCategories();
   const events = await getEvents();
 
+  console.log(categories)
+
   return (
     <div className="w-faull h-auto min-h-[100vh] flex flex-col relative">
       <div className="h-[20rem] md:h-[40rem]">
