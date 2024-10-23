@@ -4,7 +4,6 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 // import createGlobe from "cobe";
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
@@ -114,7 +113,7 @@ const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
   );
 };
 
-export const SkeletonOne = () => {
+const SkeletonOne = () => {
   return (
     <div className="relative flex py-8 px-2 gap-10 h-full">
       <div className="w-full  p-5  mx-auto bg-white dark:bg-neutral-900 shadow-2xl group h-full">
@@ -136,7 +135,7 @@ export const SkeletonOne = () => {
   );
 };
 
-export const SkeletonThree = () => {
+const SkeletonThree = () => {
   return (
     <Link
       href="https://www.youtube.com/watch?v=dCCNQgyqu7k"
@@ -160,7 +159,7 @@ export const SkeletonThree = () => {
   );
 };
 
-export const SkeletonTwo = () => {
+const SkeletonTwo = () => {
   const images = [
     "/home-image.png",
     "/home-image2.png",
