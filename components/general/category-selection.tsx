@@ -90,8 +90,8 @@ const CategorySelection = ({
                             key={index} 
                             className="w-full h-[13rem] overflow-hidden p-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
                         >
-                            <Link href={`/#${data.id}`}>
-                            <div 
+                            <Link href={`/market/#${data.id}`}>
+                            <div
                                 className={cn(
                                     "w-full p-4 grid gap-2 grid-rows-3 h-full rounded-md relative overflow-hidden bg-transparent", 
                                     "cursor-pointer"
