@@ -6,9 +6,11 @@ import { getCategories } from "@/app/actions/get-categories";
 import { getEvents } from "@/app/actions/get-events";
 import Image from "next/image";
 import { Suspense } from "react";
+import { unstable_noStore as noStore } from 'next/cache';
 
 // This is a server component, so you can directly fetch data here
 export default async function Home() {
+  noStore();
   const categories = await getCategories();
   const events = await getEvents();
 

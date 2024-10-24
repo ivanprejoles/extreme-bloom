@@ -1,8 +1,12 @@
 import React from 'react'
 import client from '@/lib/prismadb'
 import EventsTable from '../../_components/events-table'
+import { unstable_noStore as noStore } from 'next/cache';
+
 
 export const getServerSideProps = async ({ res }: any) => {
+  noStore();
+
   // Disable caching for this page on Vercel and the browser
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
