@@ -1,29 +1,10 @@
 import { type Table } from "@tanstack/react-table"
 
 export function exportTableToCSV<TData>(
-  /**
-   * The table to export.
-   * @type Table<TData>
-   */
   table: Table<TData>,
   opts: {
-    /**
-     * The filename for the CSV file.
-     * @default "table"
-     * @example "tasks"
-     */
     filename?: string
-    /**
-     * The columns to exclude from the CSV file.
-     * @default []
-     * @example ["select", "actions"]
-     */
     excludeColumns?: (keyof TData | "select" | "actions")[]
-
-    /**
-     * Whether to export only the selected rows.
-     * @default false
-     */
     onlySelected?: boolean
   } = {}
 ): void {
@@ -37,7 +18,7 @@ export function exportTableToCSV<TData>(
 
   // Build CSV content
   const csvContent = [
-    headers.join(","),
+    headers.join(","), // Join headers with commas
     ...(onlySelected
       ? table.getFilteredSelectedRowModel().rows
       : table.getRowModel().rows
@@ -45,14 +26,24 @@ export function exportTableToCSV<TData>(
       headers
         .map((header) => {
           const cellValue = row.getValue(header)
-          // Handle values that might contain commas or newlines
-          return typeof cellValue === "string"
-            ? `"${cellValue.replace(/"/g, '""')}"`
-            : cellValue
+          
+          // Check if the cell value is an object or array
+          if (typeof cellValue === "object" && cellValue !== null) {
+            // Stringify objects and arrays to ensure they are properly formatted
+            return `"${JSON.stringify(cellValue).replace(/"/g, '""')}"`
+          }
+          
+          // Handle string values, escaping double quotes
+          if (typeof cellValue === "string") {
+            return `"${cellValue.replace(/"/g, '""')}"`
+          }
+          
+          // Return other values (e.g., numbers, booleans) as is
+          return cellValue
         })
-        .join(",")
+        .join(",") // Join cell values with commas
     ),
-  ].join("\n")
+  ].join("\n") // Join all rows with newlines
 
   // Create a Blob with CSV content
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
